@@ -77,6 +77,12 @@ class FunSetSuite extends FunSuite {
     val s1 = singletonSet(1)
     val s2 = singletonSet(2)
     val s3 = singletonSet(3)
+    val s4 = singletonSet(4)
+    val s5 = singletonSet(5)
+    val s6 = singletonSet(6)
+    val s7 = singletonSet(4)
+    val s8 = singletonSet(1)
+
   }
 
   /**
@@ -109,6 +115,81 @@ class FunSetSuite extends FunSuite {
       assert(!contains(s, 3), "Union 3")
     }
   }
+
+
+  test("intersection") {
+    new TestSets {
+      val u1 = union(union(s1,s2),union(s3,s4))
+      val u2 = union(union(s1,s2),union(s5,s6))
+
+      val i = intersect(u1,u2)
+      assert(contains(i, 1))
+      assert(contains(i, 2))
+      assert(!contains(i, 3))
+      assert(!contains(i, 4))
+      assert(!contains(i, 5))
+      assert(!contains(i, 6))
+    }
+  }
+
+  test("diff") {
+    new TestSets {
+      val u1 = union(union(s1,s2),union(s3,s4))
+      val u2 = union(union(s1,s2),union(s5,s6))
+
+      val i = diff(u1,u2)
+      assert(!contains(i, 1))
+      assert(!contains(i, 2))
+      assert(contains(i, 3))
+      assert(contains(i, 4))
+      assert(!contains(i, 5))
+      assert(!contains(i, 6))
+    }
+  }
+
+  test("forall") {
+    new TestSets {
+      val u1 = union(union(s1,s2),union(s3,s4))
+
+      val i = forall(u1,x => x < 10)
+      assert(i === true)
+
+      val j = forall(u1,x => x != 4)
+      assert(j === false)
+
+    }
+  }
+
+  test("exists") {
+    new TestSets {
+      val u1 = union(union(s1,s2),union(s3,s4))
+
+      val i = exists(u1,x => x == 10)
+      assert(i === false)
+
+      val j = exists(u1,x => x == 1)
+      assert(j === true)
+    }
+  }
+
+
+  test("map") {
+    new TestSets {
+      val u1 = union(union(s1,s2),union(s3,s4))
+
+      val i = map(u1,x => x - 1)
+
+      printSet(u1)
+      printSet(i)
+
+//      assert(contains(i,2))
+//
+//      val j = exists(u1,x => x == 1)
+//      assert(j === true)
+    }
+  }
+
+
 
 
 }
